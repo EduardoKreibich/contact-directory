@@ -1,0 +1,528 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Contact Book",
+    "description": "Uma API de agenda de contatos é uma interface que permite a manipulação eficiente de informações de contatos em um sistema.",
+    "contact": {
+      "email": "kreibicheduardo@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http:localhost:3000/",
+      "description": "API de teste"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Login de Usuário",
+        "description": "Rota responsável para usuário cadastrado efetuar o login",
+        "tags": ["Login"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/Login"
+              },
+              "examples": {
+                "login": {
+                  "value": {
+                    "email": "eduardo@mail.com",
+                    "senha": "1234"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Invalid credentials"
+          },
+          "200": {
+            "token": "JWT"
+          }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "Cadastro de usuário",
+        "description": "Rota responsável para cadastrar usuários",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "Eduardo Foletto Kreibich",
+                    "email": "eduardo@mail.com",
+                    "password": "Kenzie2@",
+                    "telephone": "5599875634"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schema/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os usuários",
+        "description": "Rota responsável para listar todos os usuários",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schema/Users"
+                },
+                "examples": {
+                    "users": {
+                      "value": [{
+                        "name": "Bruno",
+                        "email": "bruno@mail.com",
+                        "password": "*********",
+                        "telephone": "5599875645"
+                      },
+                    {
+                        "name": "Eduardo",
+                        "email": "eduardo@mail.com",
+                        "password": "*********",
+                        "telephone": "5599875645"
+                    }]
+                    }
+                  }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "get": {
+        "summary": "Buscar usuário por id",
+        "description": "Rota responsável por buscar usuário cadastrado por id",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Nome do usuário pelo ID",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "404": {
+            "description": "User not foud"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schema/User"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar usuário por id",
+        "description": "Rota responsável por deletar usuário cadastrado por id",
+        "tags": ["Users"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Nome do usuário pelo ID",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "404": {
+            "description": "User not foud"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar usuário",
+        "description": "Rota responsável por atualizar usuários",
+        "tags": ["Users"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/User"
+              },
+              "examples": {
+                "user": {
+                  "value": {
+                    "name": "Eduardo Foletto Kreibich",
+                    "email": "eduardo@mail.com",
+                    "password": "Kenzie2@",
+                    "telephone": "5599875634"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schema/User"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts": {
+      "post": {
+        "summary": "Cadastro de contato",
+        "description": "Rota responsável para cadastrar contatos",
+        "tags": ["Contacts"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/Contact"
+              },
+              "examples": {
+                "contact": {
+                  "value": {
+                    "name": "Bruno",
+                    "email": "bruno@mail.com",
+                    "password": "Kenzie2@",
+                    "telephone": "5599875645"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schema/Contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Listar todos os contatos",
+        "description": "Rota responsável para listar todos os contatos",
+        "tags": ["Contacts"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "$ref": "#/components/schema/Contacts"
+                },
+                "examples": {
+                    "contacts": {
+                      "value": [{
+                        "name": "Bruno",
+                        "email": "bruno@mail.com",
+                        "password": "*********",
+                        "telephone": "5599875645"
+                      },
+                    {
+                        "name": "Eduardo",
+                        "email": "eduardo@mail.com",
+                        "password": "*********",
+                        "telephone": "5599875645"
+                    }]
+                    }
+                  }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/contacts/{id}": {
+      "get": {
+        "summary": "Buscar contato por id",
+        "description": "Rota responsável por buscar contato cadastrado por id",
+        "tags": ["Contacts"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Nome do contato pelo ID",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "404": {
+            "description": "Contact not foud"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schema/Contact"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar contato por id",
+        "description": "Rota responsável por deletar contato cadastrado por id",
+        "tags": ["Contacts"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Nome do contato pelo ID",
+            "required": true
+          }
+        ],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "404": {
+            "description": "Contact not foud"
+          },
+          "200": {
+            "description": "OK"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualizar contato",
+        "description": "Rota responsável por atualizar contato",
+        "tags": ["Contacts"],
+        "security": [{ "bearerAuth": [] }],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schema/Contact"
+              },
+              "examples": {
+                "contact": {
+                  "value": {
+                    "name": "Bruno",
+                    "email": "brunokenzie@mail.com",
+                    "password": "Kenzie2@",
+                    "telephone": "5599875634"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "401": {
+            "description": "Missing bearer token"
+          },
+          "409": {
+            "description": "Email already exists"
+          },
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schema/Contact"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schema": {
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          }
+        }
+      },
+      "Users": {
+        "type": "array",
+        "properties": [
+          {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "password": {
+              "type": "string"
+            },
+            "telephone": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "Contact": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "telephone": {
+            "type": "string"
+          }
+        }
+      },
+      "Contacts": {
+        "type": "array",
+        "properties": [
+          {
+            "id": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "telephone": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
