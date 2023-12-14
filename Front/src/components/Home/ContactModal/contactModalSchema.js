@@ -7,5 +7,5 @@ export const contactModalSchema = z.object({
 
     email:z.string().email("O e-mail é inválido"),
 
-    password:z.string().min(1)
+    telephone:z.string().min(1)
 })

@@ -65,7 +65,7 @@ export const ContactsProvider = ({ children }) => {
       });
 
       setContacts((contacts) => contacts.filter((contact) => contact.id !== contactId));
-      toast.success("Tecnologia removida com sucesso!");
+      toast.success("Contato removido com sucesso!");
     } catch (error) {
       toast.error("Ops! Algo deu errado");
     }
